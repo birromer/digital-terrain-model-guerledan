@@ -26,10 +26,15 @@ addons:
       - libjpeg-dev
       - libpng-dev
       - libtiff-dev
-      - libjasper-dev
+#      - libjasper-dev
       - libdc1394-22-dev
 
 before_script:
+  # install libjasper-dev that couldn't without new sources
+  sudo add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main"
+  sudo apt update
+  sudo apt install libjasper1 libjasper-dev
+
   # verify compilers
   - gcc -v && g++ -v && cmake --version
 
