@@ -8,6 +8,7 @@ Digital Terrain Model (Modèle Númerique de Terrain) of the lake Guerlédan.
 `include/` has the header files  
 `src/` has the source files  
 `data/` has the data necessary for the terrain model  
+
 [//]: # "tests/ has the test source files  "
 [//]: # "doc/ has the generated documentation  "
 
