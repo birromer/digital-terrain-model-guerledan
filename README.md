@@ -1,7 +1,7 @@
 # DTM-Guerledan
 Digital Terrain Model (Modèle Númerique de Terrain) of the lake Guerlédan.
 
-[![Build Status](https://travis-ci.com/birromer/dtm-guerledan.svg?branch=master)](https://travis-ci.com/github/birromer/dtm-guerledan)
+[![Build Status](https://travis-ci.com/birromer/dtm-guerledan.svg?token=AsJ1AsSzkK7yk9VnTknt&branch=main)](https://travis-ci.com/github/birromer/dtm-guerledan)
 
 ## Folders:
 `build/` is the temporary folder for building  
