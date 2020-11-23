@@ -3,6 +3,9 @@ compiler: gcc
 os: linux
 dist: focal
 
+notifications:
+  on_success: never
+
 addons:
   apt:
     sources:
