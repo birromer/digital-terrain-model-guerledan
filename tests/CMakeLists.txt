@@ -10,7 +10,11 @@ add_executable(tests
 #    ../src/Cell.cpp
 #    ../src/Path.cpp
 #    ../src/vibes.cpp
-    tests_main.cpp
+    test_main.cpp
+    test_input.cpp
+#    test_read_data.cpp
+#    test_projection.cpp
+#    test_create_image.cpp
 )
 
 include(FetchContent)

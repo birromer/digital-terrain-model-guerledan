@@ -4,6 +4,6 @@ project(src)
 set(cmake_build_type debug)
 set(cmake_cxx_flags "-Wall -Wextra -std=c++11")
 
-add_executable( dtm
+add_executable(create_raster
     main.cpp
 )
