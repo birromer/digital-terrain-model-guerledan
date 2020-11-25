@@ -4,6 +4,7 @@
 #include <string.h>
 
 //#include <opencv2/opencv.hpp>
+#include <proj.h>
 
 #include "../include/defines.h"
 
@@ -43,6 +44,15 @@ int main(int argc, char *argv[]) {
     printf("Size of the output image was not specified\n");
     return -3;  //TODO: verify if a default value would be better
   }
+
+  PJ_CONTEXT *C;
+  PJ *P;
+  PJ* P_for_GIS;
+  PJ_COORD a, b;
+
+//  cv::Mat imReference = cv::imread("/home/birromer/Pictures/solaire-1.jpg");
+//  cv::Mat imGray;
+//  cv::cvtColor(imReference, imGray, cv::COLOR_BGR2GRAY);
 
   // read data and store
 

@@ -41,6 +41,15 @@ before_script:
   # verify compilers
   - gcc -v && g++ -v && cmake --version
 
+  # install and verify proj
+  - wget https://download.osgeo.org/proj/proj-7.2.0.tar.gz
+  - tar xvzf proj-7.2.0.tar.gz
+  - cd proj-7.2.0
+  - ./configure
+  - make
+  - sudo make install
+  - make check
+
   # install and verify opencv
   - cd ..
   - git clone https://github.com/opencv/opencv.git
