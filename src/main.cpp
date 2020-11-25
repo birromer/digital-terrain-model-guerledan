@@ -2,11 +2,13 @@
 #include <cstdlib>
 #include <string>
 #include <string.h>
+#include <fstream>
 
 //#include <opencv2/opencv.hpp>
 #include <proj.h>
 
 #include "../include/defines.h"
+#include "../include/Mesh.h"
 
 void show_help();
 void parseArgs(int argc, char* argv[], bool *show_help, bool *verbose, char filename[], int *size_img);
@@ -45,16 +47,23 @@ int main(int argc, char *argv[]) {
     return -3;  //TODO: verify if a default value would be better
   }
 
-  PJ_CONTEXT *C;
-  PJ *P;
-  PJ* P_for_GIS;
-  PJ_COORD a, b;
+  // instantiate the mesh with required information
+  Mesh *mesh = new Mesh(filename, size_img);
+
+//  PJ_CONTEXT *C;
+//  PJ *P;
+//  PJ* P_for_GIS;
+//  PJ_COORD a, b;
 
 //  cv::Mat imReference = cv::imread("/home/birromer/Pictures/solaire-1.jpg");
 //  cv::Mat imGray;
 //  cv::cvtColor(imReference, imGray, cv::COLOR_BGR2GRAY);
 
   // read data and store
+  mesh->read_file();
+
+
+
 
   // make the projection
 

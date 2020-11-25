@@ -12,6 +12,7 @@ include_directories(${PROJ_INCLUDE_DIRS})
 
 add_executable(create_raster
     main.cpp
+    mesh/Mesh.cpp
 )
 
 target_link_libraries(create_raster ${PROJ_LIBRARIES})

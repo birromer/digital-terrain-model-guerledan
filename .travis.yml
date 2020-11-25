@@ -62,6 +62,7 @@ before_script:
   - sudo make install
   - sudo sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
   - sudo ldconfig
+#  - pkg-config --modversion opencv4  trying below without 4 to see if it works
   - pkg-config --modversion opencv4
 
   # return to base of the project
