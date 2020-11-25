@@ -34,9 +34,9 @@ addons:
 
 before_script:
   # install libjasper-dev that couldn't without new sources
-  -sudo add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main"
-  -sudo apt update
-  -sudo apt install libjasper1 libjasper-dev
+  - sudo add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main"
+  - sudo apt update
+  - sudo apt install libjasper1 libjasper-dev
 
   # verify compilers
   - gcc -v && g++ -v && cmake --version
