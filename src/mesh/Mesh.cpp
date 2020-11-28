@@ -16,8 +16,22 @@ void Mesh::read_file() {
   std::ifstream f(this->m_filename);  // initializes file interface
   std::string tmp;  // temporary string for reading the file
 
+  double coord_lat, coord_lon, val;
+
   std::map<std::pair<double,double>, double> m_readings;
 
+  while (!f.eof()) {
+    f >> coord_lat >> coord_lon >> val;  // read the 3 values from the line
+
+    std::pair<double,double> coords = std::make_pair(coord_lat, coord_lon);  // each value will be identified by its coordinates
+    m_readings[coords] = val;
+
+    std::getline(f, tmp);  // reads the rest of the line, for the next iteration to have the next line
+  }
+
+  this->m_readings = m_readings;
+
+  f.close();
 }
 
 void Mesh::gen_image_bin() {

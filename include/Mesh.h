@@ -7,16 +7,29 @@
 #include <fstream>
 #include <map>
 
+#include <iomanip>
+
 //#include <opencv2/opencv.hpp>
 
 class Mesh {
   public:
+    /**
+     * \brief Reads the mesh's file into m_readings
+     * \note stored as map<pair<double,double>,double>
+     * \param
+     */
     Mesh(const std::string& filename, double width);
     ~Mesh();
 
 //    static Mesh from_file(const std::string& filename);
-
+//
+    /**
+     * \brief Reads the mesh's file into m_readings
+     * \note stored as map<pair<double,double>,double>
+     */
     void read_file();
+
+    void project();
 
     void gen_image_bin();
     void gen_image_col();
@@ -27,6 +40,9 @@ class Mesh {
   private:
     std::string m_filename;
     double m_width;
-//    cv::Mat image_bin;
+    std::map<std::pair<double,double>, double> m_readings;
+//    cv::Mat image_raw;
+//    cv::Mat projection;
+//    cv::Mat image_bin;  # do not store those, too large for always on memory
 //    cv::Mat image_col;
 };
