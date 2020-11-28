@@ -62,9 +62,6 @@ int main(int argc, char *argv[]) {
   // read data and store
   mesh->read_file();
 
-
-
-
   // make the projection
 
   // create binary image
