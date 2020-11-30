@@ -44,11 +44,9 @@ int Mesh::read() {
 int Mesh::project() {
   PJ_CONTEXT *C;
   PJ *P;
-//  PJ* P_for_GIS;
-  PJ_COORD a, b;
+  PJ_COORD orig, proj;  // variables will be reused in linear usage, little memory overuse
 
   C = proj_context_create();
-//  P = proj_create(C, "+proj=lcc +lon_0=48.39 +lat_0=-4.48 +lat_1=48 +lat2_50");
   P = proj_create_crs_to_crs(C,
                   "+proj=longlat +datum=WGS84",  // original format in the file
                   "+proj=lcc +lon_0=48.39 +lat_0=-4.48 +lat_1=48 +lat2_50",  // desired projection
@@ -61,14 +59,15 @@ int Mesh::project() {
   std::map<std::pair<double,double>, double> *m_projection= new std::map<std::pair<double,double>, double>;
 
   for (auto it = m_readings->begin(); it != m_readings->end(); it++) {
-    PJ_COORD orig = proj_coord(it->first.first, it->first.second, 0, 0);
-    PJ_COORD proj = proj_trans(P, PJ_FWD, orig);
+    orig = proj_coord(it->first.first, it->first.second, 0, 0);
+    proj = proj_trans(P, PJ_FWD, orig);
 
     PJ_XYZ socorro = proj.xyz;
 
 //    std::cout << std::setprecision(20) << "new coord:" << socorro.x << " " << socorro.y << std::endl;
   }
 
+  return 0;
 }
 
 void Mesh::gen_image_bin() {
