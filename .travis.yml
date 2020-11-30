@@ -50,20 +50,19 @@ before_script:
   - sudo make install
   - make check
 
-  # install and verify opencv
-  - cd ..
-  - git clone https://github.com/opencv/opencv.git
-  - git clone https://github.com/opencv/opencv_contrib.git
-  - cd opencv
-  - mkdir build
-  - cd build
-  - cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_EXAMPLES=OFF -D BUILD_opencv_apps=OFF -D BUILD_DOCS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D CMAKE_INSTALL_PREFIX=/usr/local ..
-  - make -j4
-  - sudo make install
-  - sudo sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
-  - sudo ldconfig
+#  # install and verify opencv
+#  - cd ..
+#  - git clone https://github.com/opencv/opencv.git
+#  - git clone https://github.com/opencv/opencv_contrib.git
+#  - cd opencv
+#  - mkdir build
+#  - cd build
+#  - cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_EXAMPLES=OFF -D BUILD_opencv_apps=OFF -D BUILD_DOCS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D CMAKE_INSTALL_PREFIX=/usr/local ..
+#  - make -j4
+#  - sudo make install
+#  - sudo sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
+#  - sudo ldconfig
 #  - pkg-config --modversion opencv4  trying below without 4 to see if it works
-  - pkg-config --modversion opencv4
 
   # return to base of the project
   - cd ../../dtm-guerledan
