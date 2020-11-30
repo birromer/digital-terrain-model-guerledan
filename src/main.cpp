@@ -52,13 +52,16 @@ int main(int argc, char *argv[]) {
 //  cv::Mat imGray;
 //  cv::cvtColor(imReference, imGray, cv::COLOR_BGR2GRAY);
 
-  if (mesh->read_file() == -1) {
+  if (mesh->read() < 0) {
     std::cout << "Error: specified filed does not exist." << std::endl;
     return -4;
   }
 
   // make the projection
-  mesh->project();
+  if (mesh->project() < 0) {
+    std::cout << "Error: problem projecting the source data." << std::endl;
+    return -5;
+  }
 
   // create binary image
 

@@ -28,7 +28,8 @@ class Mesh {
      * \brief Reads the mesh's file into m_readings
      * \note stored as map<pair<double,double>,double>
      */
-    int read_file();
+    int read();
+    int read_and_project();
 
     int project();
 
@@ -41,7 +42,8 @@ class Mesh {
   private:
     std::string m_filename;
     double m_width;
-    std::map<std::pair<double,double>, double> m_readings;
+    std::map<std::pair<double,double>, double> *m_readings;
+    std::map<std::pair<double,double>, double> *m_projection;
 //    cv::Mat image_raw;
 //    cv::Mat projection;
 //    cv::Mat image_bin;  # do not store those, too large for always on memory
