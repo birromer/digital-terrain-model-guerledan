@@ -61,10 +61,7 @@ int main(int argc, char *argv[]) {
   }
 
   // make the projection
-  PJ_CONTEXT *C;
-  PJ *P;
-  PJ* P_for_GIS;
-  PJ_COORD a, b;
+  mesh->project();
 
   // create binary image
 

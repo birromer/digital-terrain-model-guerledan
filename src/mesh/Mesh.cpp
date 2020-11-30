@@ -40,6 +40,17 @@ int Mesh::read_file() {
   return 0;
 }
 
+int Mesh::project() {
+  PJ_CONTEXT *C;
+  PJ *P;
+  PJ* P_for_GIS;
+  PJ_COORD a, b;
+
+  C = proj_context_create();
+  P = proj_create(C, "+proj=lcc +lon_0=48.39 +lat_0=-4.48 +lat_1=48");
+
+}
+
 void Mesh::gen_image_bin() {
 
 }

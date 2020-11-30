@@ -8,6 +8,7 @@
 #include <map>
 
 #include <iomanip>
+#include <proj.h>
 
 //#include <opencv2/opencv.hpp>
 
@@ -29,7 +30,7 @@ class Mesh {
      */
     int read_file();
 
-    void project();
+    int project();
 
     void gen_image_bin();
     void gen_image_col();
