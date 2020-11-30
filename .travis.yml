@@ -32,6 +32,7 @@ addons:
 #      - libjasper-dev
       - libdc1394-22-dev
       - libproj-dev
+      - proj-bin
 
 before_script:
   # install libjasper-dev that couldn't without new sources
