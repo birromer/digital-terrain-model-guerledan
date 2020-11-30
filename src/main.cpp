@@ -11,7 +11,7 @@
 #include "../include/Mesh.h"
 
 void show_help();
-void parseArgs(int argc, char* argv[], bool *show_help, bool *verbose, char filename[], int *size_img);
+void parse_args(int argc, char* argv[], bool *show_help, bool *verbose, char filename[], int *size_img);
 
 
 int main(int argc, char *argv[]) {
@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
   int size_img       = -1;
 
   // process arguments
-  parseArgs(argc, argv, &help, &verbose, filename, &size_img);
+  parse_args(argc, argv, &help, &verbose, filename, &size_img);
 
   if(help) {
     show_help();
@@ -29,40 +29,42 @@ int main(int argc, char *argv[]) {
   }
 
   if(argc < 3) { //TODO: enable default values
-    printf("Not enough arguments.\nTry: %s --help\n", argv[0]);
+    std::cout << "Not enough arguments.\nTry: " << argv[0] << " --help\n" << std::endl;
     return -1;
   }
 
-  std::cout << "filename: " << filename << std::endl;
-  std::cout << "size: " << size_img<< std::endl;
-
   if(!strcmp(filename,NO_PATH)) {
-    printf("No data file specified\n");
+    std::cout << "Error: No data file specified" << std::endl;
     return -2;  //TODO: change to use whatever file is in data folder
   }  // will verify is file exists when opening using outside
      // function that deals with it as it may be very large
 
   if(size_img< 0) {
-    printf("Size of the output image was not specified\n");
+    std::cout << "Error: Size of the output image was not specified" << std::endl;
     return -3;  //TODO: verify if a default value would be better
   }
+
+  std::cout << "Starting raster with: " << std::endl << "Filename -> " << filename << std::endl << "Image width -> " << size_img << std::endl;
 
   // instantiate the mesh with required information
   Mesh *mesh = new Mesh(filename, size_img);
 
-//  PJ_CONTEXT *C;
-//  PJ *P;
-//  PJ* P_for_GIS;
-//  PJ_COORD a, b;
+  // read data and store
 
 //  cv::Mat imReference = cv::imread("/home/birromer/Pictures/solaire-1.jpg");
 //  cv::Mat imGray;
 //  cv::cvtColor(imReference, imGray, cv::COLOR_BGR2GRAY);
 
-  // read data and store
-  mesh->read_file();
+  if (mesh->read_file() == -1) {
+    std::cout << "Error: specified filed does not exist." << std::endl;
+    return -4;
+  }
 
   // make the projection
+  PJ_CONTEXT *C;
+  PJ *P;
+  PJ* P_for_GIS;
+  PJ_COORD a, b;
 
   // create binary image
 
@@ -73,7 +75,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-void parseArgs(int argc, char* argv[], bool *show_help, bool *verbose, char filename[], int *size_img) {
+void parse_args(int argc, char* argv[], bool *show_help, bool *verbose, char filename[], int *size_img) {
   int i = 0;
   while(i < argc){
     if(!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
@@ -101,9 +103,9 @@ void parseArgs(int argc, char* argv[], bool *show_help, bool *verbose, char file
 
 void show_help()
 {
-  printf("Command line options:\n\n");
-  printf("( -h   | --help )               : Displays this help message.\n");
-  printf("( -v   | --verbose )            : Displays more processing information.\n");
-  printf("( -f   | --filename) <PATH>     : The path for the data file.\n");
-  printf("( -s   | --sie) <N>             : Desired size of the output image.\n");
+  std::cout << "Command line options:\n\n" << std::endl;
+  std::cout << "( -h   | --help )               : Displays this help message.\n" << std::endl;
+  std::cout << "( -v   | --verbose )            : Displays more processing information.\n" << std::endl;
+  std::cout << "( -f   | --filename) <PATH>     : The path for the data file.\n" << std::endl;
+  std::cout << "( -s   | --sie) <N>             : Desired size of the output image.\n" << std::endl;
 }

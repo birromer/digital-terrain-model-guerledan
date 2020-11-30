@@ -22,12 +22,12 @@ class Mesh {
     ~Mesh();
 
 //    static Mesh from_file(const std::string& filename);
-//
+
     /**
      * \brief Reads the mesh's file into m_readings
      * \note stored as map<pair<double,double>,double>
      */
-    void read_file();
+    int read_file();
 
     void project();
 

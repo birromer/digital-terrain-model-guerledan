@@ -12,8 +12,13 @@ Mesh::Mesh(const std::string& filename, double width) {
 
 //static Mesh Mesh::from_file(const std::string& filename);
 
-void Mesh::read_file() {
+int Mesh::read_file() {
   std::ifstream f(this->m_filename);  // initializes file interface
+
+  if (!f.good()) // return -1 if fails to open file
+    return -1;
+
+
   std::string tmp;  // temporary string for reading the file
 
   double coord_lat, coord_lon, val;
@@ -32,6 +37,7 @@ void Mesh::read_file() {
   this->m_readings = m_readings;
 
   f.close();
+  return 0;
 }
 
 void Mesh::gen_image_bin() {
