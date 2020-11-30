@@ -4,9 +4,6 @@
 #include <string.h>
 #include <fstream>
 
-//#include <opencv2/opencv.hpp>
-#include <proj.h>
-
 #include "../include/defines.h"
 #include "../include/Mesh.h"
 

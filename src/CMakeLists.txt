@@ -4,8 +4,9 @@ project(src)
 set(cmake_build_type debug)
 set(cmake_cxx_flags "-Wall -Wextra -std=c++11")
 
-include_directories(${PROJ_INCLUDE_DIRS})
 find_package(PROJ)
+
+include_directories(${PROJ_INCLUDE_DIRS})
 
 add_executable(create_raster
     main.cpp

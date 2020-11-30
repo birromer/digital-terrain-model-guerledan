@@ -47,7 +47,7 @@ int Mesh::project() {
   PJ_COORD a, b;
 
   C = proj_context_create();
-  P = proj_create(C, "+proj=lcc +lon_0=48.39 +lat_0=-4.48 +lat_1=48");
+  P = proj_create(C, "+proj=lcc +lon_0=48.39 +lat_0=-4.48 +lat_1=48 +lat2_50");
 
 }
 
