@@ -10,7 +10,6 @@
 void show_help();
 void parse_args(int argc, char* argv[], bool *show_help, bool *verbose, char filename[], int *size_img);
 
-
 int main(int argc, char *argv[]) {
   bool help          = false;
   bool verbose       = false;
@@ -64,6 +63,10 @@ int main(int argc, char *argv[]) {
   }
 
   // create binary image
+  if (mesh->gen_image_grey() < 0) {
+    std::cout << "Error: problem creating grey image." << std::endl;
+    return -5;
+  }
 
   // create colored image
 
@@ -77,32 +80,26 @@ void parse_args(int argc, char* argv[], bool *show_help, bool *verbose, char fil
   while(i < argc){
     if(!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
       *show_help = true;
-    }
-
-    else if(!strcmp(argv[i], "-v") || !strcmp(argv[i], "--verbose"))
+    } else if(!strcmp(argv[i], "-v") || !strcmp(argv[i], "--verbose")) {
       *verbose = true;
-
-    else if(!strcmp(argv[i], "-f") || !strcmp(argv[i], "--filename")){
+    } else if(!strcmp(argv[i], "-f") || !strcmp(argv[i], "--filename")){
       i++;
       if(i < argc)
         strcpy(filename, argv[i]);
-    }
-
-    else if(!strcmp(argv[i], "-s") || !strcmp(argv[i], "--size")){
+    } else if(!strcmp(argv[i], "-s") || !strcmp(argv[i], "--size")) {
       i++;
       if(i < argc)
         *size_img = atoi(argv[i]);
     }
-
     i++;
   }
 }
 
 void show_help()
 {
-  std::cout << "Command line options:\n\n" << std::endl;
-  std::cout << "( -h   | --help )               : Displays this help message.\n" << std::endl;
-  std::cout << "( -v   | --verbose )            : Displays more processing information.\n" << std::endl;
-  std::cout << "( -f   | --filename) <PATH>     : The path for the data file.\n" << std::endl;
-  std::cout << "( -s   | --sie) <N>             : Desired size of the output image.\n" << std::endl;
+  std::cout << "Command line options:" << std::endl;
+  std::cout << "( -h   | --help )               : Displays this help message." << std::endl;
+  std::cout << "( -v   | --verbose )            : Displays more processing information." << std::endl;
+  std::cout << "( -f   | --filename) <PATH>     : The path for the data file." << std::endl;
+  std::cout << "( -s   | --size) <N>             : Desired size of the output image." << std::endl << std::endl;
 }

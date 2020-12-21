@@ -33,8 +33,8 @@ class Mesh {
 
     int project();
 
-    void gen_image_bin();
-    void gen_image_col();
+    int gen_image_grey();
+    int gen_image_col();
 
 //    friend std::ostream& operator<<(std::ostream& stream, const Mesh& m);
 //    friend std::istream& operator>>(std::istream& stream, Mesh& m);

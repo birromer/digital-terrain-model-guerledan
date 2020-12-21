@@ -49,7 +49,7 @@ int Mesh::project() {
   C = proj_context_create();
   P = proj_create_crs_to_crs(C,
                   "+proj=longlat +datum=WGS84",  // original format in the file
-                  "+proj=lcc +lon_0=48.39 +lat_0=-4.48 +lat_1=48 +lat2_50",  // desired projection
+                  "+proj=lcc +lon_0=48.39 +lat_0=-4.48 +lat_1=48 +lat2_50",  // desired projection Lambert93
                   NULL
   );
 
@@ -61,20 +61,22 @@ int Mesh::project() {
   for (auto it = m_readings->begin(); it != m_readings->end(); it++) {
     orig = proj_coord(it->first.first, it->first.second, 0, 0);
     proj = proj_trans(P, PJ_FWD, orig);
+    PJ_XYZ proj_xyz = proj.xyz;
 
-    PJ_XYZ socorro = proj.xyz;
-
-//    std::cout << std::setprecision(20) << "new coord:" << socorro.x << " " << socorro.y << std::endl;
+    std::pair<double,double> c_xy (proj_xyz.x, proj_xyz.y);
+    (*m_projection)[c_xy] = it->second;
+//    std::cout << std::setprecision(20) << "new coord:" << proj_xyz.x << " " << proj_xyz.y << std::endl;
   }
 
   return 0;
 }
 
-void Mesh::gen_image_bin() {
+int Mesh::gen_image_grey() {
+
+  return 0;
 }
 
-void Mesh::gen_image_col() {
-}
+int Mesh::gen_image_col() {
 
-//friend std::ostream& operator<<(std::ostream& stream, const Mesh& m);
-//friend std::istream& operator>>(std::istream& stream, Mesh& m);
+  return 0;
+}
