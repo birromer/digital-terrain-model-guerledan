@@ -46,11 +46,6 @@ int main(int argc, char *argv[]) {
   Mesh *mesh = new Mesh(filename, size_img);
 
   // read data and store
-
-//  cv::Mat imReference = cv::imread("/home/birromer/Pictures/solaire-1.jpg");
-//  cv::Mat imGray;
-//  cv::cvtColor(imReference, imGray, cv::COLOR_BGR2GRAY);
-
   if (mesh->read() < 0) {
     std::cout << "Error: specified filed does not exist." << std::endl;
     return -4;
@@ -65,10 +60,14 @@ int main(int argc, char *argv[]) {
   // create binary image
   if (mesh->gen_image_grey() < 0) {
     std::cout << "Error: problem creating grey image." << std::endl;
-    return -5;
+    return -6;
   }
 
-  // create colored image
+//  // create colored image
+//  if (mesh->gen_image_col() < 0) {
+//    std::cout << "Error: problem creating colored image." << std::endl;
+//    return -7;
+//  }
 
   // create shadows
 

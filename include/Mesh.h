@@ -7,6 +7,7 @@
 #include <fstream>
 #include <map>
 
+#include <math.h>
 #include <iomanip>
 #include <proj.h>
 
@@ -36,16 +37,16 @@ class Mesh {
     int gen_image_grey();
     int gen_image_col();
 
-//    friend std::ostream& operator<<(std::ostream& stream, const Mesh& m);
-//    friend std::istream& operator>>(std::istream& stream, Mesh& m);
+    std::pair<double,double> find_closest_key(double x, double y);
 
   private:
     std::string m_filename;
-    double m_width;
+    int m_width;
+    int m_height;
+    double m_proj_width;
+    double m_proj_height;
+    double m_max_z;
+    double m_min_z;
     std::map<std::pair<double,double>, double> *m_readings;
     std::map<std::pair<double,double>, double> *m_projection;
-//    cv::Mat image_raw;
-//    cv::Mat projection;
-//    cv::Mat image_bin;  # do not store those, too large for always on memory
-//    cv::Mat image_col;
 };
