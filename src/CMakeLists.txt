@@ -11,6 +11,7 @@ include_directories(${PROJ_INCLUDE_DIRS})
 add_executable(create_raster
     main.cpp
     mesh/Mesh.cpp
+    utils.cpp
 )
 
 target_link_libraries(create_raster /usr/lib/libproj.so ${PROJ_LIBRARIES})
