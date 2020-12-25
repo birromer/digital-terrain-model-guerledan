@@ -83,12 +83,16 @@ int Mesh::project() {
   }
 
   this->m_projection = m_projection;
+
   this->m_proj_width = max_x - min_x;
   this->m_proj_height = max_y - min_y;
+
   this->m_offset_x = min_x;
   this->m_offset_y = min_y;
+
   this->m_max_z = max_z;
   this->m_min_z = min_z;
+
   this->m_height = this->m_width * this->m_proj_height / this->m_proj_width;
 
   return 0;
@@ -126,11 +130,6 @@ int Mesh::gen_image_grey() {
 
   std::cout << "starting image creation with height=" << this->m_height << " and width=" << this->m_width << std::endl;
 
-  double conv_x = this->m_proj_width / this->m_width;
-  double conv_y = this->m_proj_height/ this->m_height;
-
-  std::cout << "ratio projection to image in x by " << conv_x << std::endl;
-  std::cout << "ratio projection to image in y by " << conv_y << std::endl;
   std::cout << "proj width: " << this->m_proj_width << " with min " << this->m_offset_x << " and max " << this->m_offset_x+this->m_proj_width << std::endl;
   std::cout << "proj height: " << this->m_proj_height << " with min " << this->m_offset_y << " and max " << this->m_offset_y+this->m_proj_height << std::endl;
   std::cout << "max z: " << this->m_max_z << " - min z: " << this->m_min_z << std::endl;

@@ -14,12 +14,15 @@
 
 class Mesh {
   public:
+
     /**
-     * \brief Reads the mesh's file into m_readings
-     * \note stored as map<pair<double,double>,double>
-     * \param
+     * \brief Instantiates a Mesh object
+     * \note
+     * \param filename is a string with the path to the file
+     * \param width is the numeric value of the horizontal size of the image
      */
     Mesh(const std::string& filename, double width);
+
     ~Mesh();
 
 //    static Mesh from_file(const std::string& filename);
@@ -29,13 +32,33 @@ class Mesh {
      * \note stored as map<pair<double,double>,double>
      */
     int read();
-    int read_and_project();
 
+    /**
+     * \brief Generates the projection of the data read
+     * \note makes use of the Lambert93 projection, with reference values around Brest
+     * \note stores the projection as map<pair<double,double>,double>
+     */
     int project();
 
+    /**
+     * \brief Generates the greyscale image related to the read data
+     * \note the created file is called mnt_grey.pgm
+     * \note it is necessary to have already created a projection of the data
+     */
     int gen_image_grey();
+
+    /**
+     * \brief Generates the colored image related to the read data
+     * \note the created file is called mnt_color.pgm
+     * \note it is necessary to have already created a projection of the data
+     */
     int gen_image_col();
 
+    /**
+     * \brief Finds the closest point in the projection to a specified coordinate
+     * \note is is necessary to have already created a projection of the data
+     * \param x and y are the numeric values of the base coordinate
+     */
     std::pair<double,double> find_closest_key(double x, double y);
 
   private:
