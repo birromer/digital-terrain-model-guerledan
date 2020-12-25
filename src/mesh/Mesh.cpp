@@ -129,13 +129,13 @@ int Mesh::gen_image_grey() {
   double conv_x = this->m_proj_width / this->m_width;
   double conv_y = this->m_proj_height/ this->m_height;
 
-  std::cout << "conv x: " << conv_x << std::endl;
-  std::cout << "conv y: " << conv_y << std::endl;
+  std::cout << "ratio projection to image in x by " << conv_x << std::endl;
+  std::cout << "ratio projection to image in y by " << conv_y << std::endl;
   std::cout << "proj width: " << this->m_proj_width << " with min " << this->m_offset_x << " and max " << this->m_offset_x+this->m_proj_width << std::endl;
-  std::cout << "proj height : " << this->m_proj_height << " with min " << this->m_offset_y << " and max " << this->m_offset_y+this->m_proj_height << std::endl;
+  std::cout << "proj height: " << this->m_proj_height << " with min " << this->m_offset_y << " and max " << this->m_offset_y+this->m_proj_height << std::endl;
   std::cout << "max z: " << this->m_max_z << " - min z: " << this->m_min_z << std::endl;
 
-  std::map<std::pair<int,int>,double> image;
+  std::map<std::pair<int,int>,int> image;
   double grey, norm_x, norm_y;
   int x, y;
 
@@ -151,42 +151,31 @@ int Mesh::gen_image_grey() {
 
     // normalize the gray level between 0 and 1 and scale it back to the desired detail level
     grey = normalize(it->second, this->m_min_z, this->m_max_z);
-    image[idx] = 1023*grey;
+    image[idx] = 1024 - round(1023*grey);
   }
-
-
-//  for (auto it = image.begin(); it != image.end(); it++) {
-//    std::cout << it->first.first << " " << it->first.second << ": " << it->second << std::endl;
-//    std::cin >> a;
-//  }
-
-  // sort x values
-  // sort y values
-  // query will be log(n)
 
   // write starting lines of the file with file type and size
   f << "P2" << std::endl;
-  f << this->m_proj_width << " " << this->m_proj_height << std::endl;
+  f << this->m_width << " " << this->m_height << std::endl;
   f << 1023 << std::endl;
 
-  std::pair<double, double> key;
-  double pos_x;
-  double pos_y;
+  std::pair<int,int> key;
 
-  // for each pixel of the image, find its value from the projection
-//  for (int i=0; i<this->m_height; i++) {  // iterate over all lines  // moves in y
-//    for (int j=0; j<this->m_width; j++) {  // iterate over all values in each line // moves in x
-//      if (i % 100 == 0 && j % 100 == 0)
-//        std::cout << "iteracao i " << i << " j " << j << std::endl;
-//      pos_x = j*conv_x + this->m_offset_x;
-//      pos_y = i*conv_y + this->m_offset_y;
-//      key = this->find_closest_key(pos_x, pos_y);
-//      grey = normalize((*this->m_projection)[key], 0, 1023);
-//      std::cout << "added value " << grey << " for " << key.first << " and " << key.second << ". refering to original values " << pos_x << " " << pos_y << std::endl;
-//      f << grey << " ";
-//    }
-//    f  << "\n";
-//  }
+  for (int i=0; i<this->m_height; i++) {
+    for (int j=0; j<this->m_width; j++) {
+
+      key = std::make_pair(i,j);
+
+      if (image.find(key) == image.end()) {
+        f << 0 << " ";
+      } else {
+        f << image[key] << " ";
+      }
+
+    }
+
+    f << "\n";
+  }
 
   f.close();
   return 0;
