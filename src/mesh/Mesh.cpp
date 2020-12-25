@@ -84,8 +84,8 @@ int Mesh::project() {
 
   this->m_projection = m_projection;
 
-  this->m_proj_width = max_x - min_x;
-  this->m_proj_height = max_y - min_y;
+  this->m_proj_width= max_x - min_x;
+  this->m_proj_height= max_y - min_y;
 
   this->m_offset_x = min_x;
   this->m_offset_y = min_y;
@@ -128,11 +128,12 @@ int Mesh::gen_image_grey() {
     return -1;
   }
 
-  std::cout << "starting image creation with height=" << this->m_height << " and width=" << this->m_width << std::endl;
+  std::cout << std::endl << "Starting image creation with height=" << this->m_height << " and width=" << this->m_width << std::endl;
 
+  // comment out afterwards
   std::cout << "proj width: " << this->m_proj_width << " with min " << this->m_offset_x << " and max " << this->m_offset_x+this->m_proj_width << std::endl;
   std::cout << "proj height: " << this->m_proj_height << " with min " << this->m_offset_y << " and max " << this->m_offset_y+this->m_proj_height << std::endl;
-  std::cout << "max z: " << this->m_max_z << " - min z: " << this->m_min_z << std::endl;
+  std::cout << "max z: " << this->m_max_z << " - min z: " << this->m_min_z << std::endl << std::endl;
 
   std::map<std::pair<int,int>,int> image;
   double grey, norm_x, norm_y;
@@ -140,17 +141,17 @@ int Mesh::gen_image_grey() {
 
   for (auto it = this->m_projection->begin(); it != this->m_projection->end(); it++) {
     // normalize between 0 and 1
-    norm_x = normalize(it->first.first, this->m_offset_x, this->m_offset_x+this->m_proj_width);
-    norm_y = normalize(it->first.second, this->m_offset_y, this->m_offset_y+this->m_proj_height);
+    norm_x = normalize(it->first.first, this->m_offset_x, this->m_proj_width + this->m_offset_x);
+    norm_y = normalize(it->first.second, this->m_offset_y, this->m_proj_height + this->m_offset_y);
     // scale the value to the image size
-    x = round(this->m_width * norm_x);
-    y = round(this->m_height * norm_y);
+    x = round(this->m_height* norm_x);
+    y = round(this->m_width * norm_y);
 
     std::pair<int,int> idx = std::make_pair(x,y);
 
     // normalize the gray level between 0 and 1 and scale it back to the desired detail level
     grey = normalize(it->second, this->m_min_z, this->m_max_z);
-    image[idx] = 1024 - round(1023*grey);
+    image[idx] = 1023 - round(1023*grey);  // inverted so that darker values mean deeper levels
   }
 
   // write starting lines of the file with file type and size
@@ -160,7 +161,8 @@ int Mesh::gen_image_grey() {
 
   std::pair<int,int> key;
 
-  for (int i=0; i<this->m_height; i++) {
+  for (int i=this->m_height-1; i>=0; i--) {
+//  for (int i=0; i<this->m_height; i++) {
     for (int j=0; j<this->m_width; j++) {
 
       key = std::make_pair(i,j);
