@@ -49,7 +49,7 @@ class Mesh {
 
     /**
      * \brief Generates the colored image related to the read data
-     * \note the created file is called mnt_color.pgm
+     * \note the created file is called mnt_color.ppm
      * \note it is necessary to have already created a projection of the data
      */
     int gen_image_col();

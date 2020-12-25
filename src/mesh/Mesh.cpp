@@ -180,6 +180,7 @@ int Mesh::gen_image_grey() {
       if (image->find(key) == image->end()) {
         f << 0 << " ";
       } else {
+        // in the grayscale case, must simply rescale the values for the desired detail level
         f << 1023 - round(1023 * (*image)[key]) << " "; // inverted so that darker values mean deeper levels
       }
 
@@ -194,6 +195,55 @@ int Mesh::gen_image_grey() {
 
 int Mesh::gen_image_col() {
   std::string filename = "mnt_col.ppm";
+  std::ofstream f(filename);  // open the file
+
+  if (this->m_projection == 0) {
+    std::cout << m_projection << std::endl;
+    std::cout << "Cannot proceed, no projection available." << std::endl;
+    return -2;
+   }
+
+  if (!f.is_open()) {  // test if file opening failed
+    std::cout << "Error opening file " << filename << std::endl;
+    return -1;
+  }
+
+  std::cout << std::endl << "Starting colored image creation with height=" << this->m_height << " and width=" << this->m_width << std::endl;
+
+  // generate the base image in case it hasn't been yet
+  if (this->generated_base_image == false) {
+    this->gen_base_image();
+  }
+
+  std::map<std::pair<int,int>, double> *image = this->m_base_image;  // copy it for easier use
+
+  // write starting lines of the file with file type and size
+  f << "P3" << std::endl;
+  f << this->m_width << " " << this->m_height << std::endl;
+  f << 255 << std::endl;
+
+  std::pair<int,int> key;
+
+  for (int i=this->m_height-1; i>=0; i--) {
+//  for (int i=0; i<this->m_height; i++) {
+    for (int j=0; j<this->m_width; j++) {
+
+      key = std::make_pair(i,j);
+
+      if (image->find(key) == image->end()) {
+        f << 0 << " ";
+      } else {
+        // in the grayscale case, must simply rescale the values for the desired detail level
+        f << 1023 - round(1023 * (*image)[key]) << " "; // inverted so that darker values mean deeper levels
+      }
+
+    }
+
+    f << "\n";
+  }
+
+  f.close();
+  return 0;
 
   return 0;
 }
