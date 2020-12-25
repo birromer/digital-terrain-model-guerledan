@@ -54,7 +54,7 @@ int Mesh::project() {
   if (P == 0)  // returns error code if unsuccessful in creating projection transform
     return -1;
 
-  std::map<std::pair<double,double>, double> *m_projection= new std::map<std::pair<double,double>, double>;
+  std::map<std::pair<double,double>, double> *m_projection = new std::map<std::pair<double,double>, double>;
   double max_x=-99999999, max_y=-99999999, max_z=-99999999, min_x=99999999, min_y=99999999, min_z=99999999;
 
   for (auto it = m_readings->begin(); it != m_readings->end(); it++) {
@@ -97,18 +97,10 @@ int Mesh::project() {
 std::pair<double,double> Mesh::find_closest_key(double x, double y) {
   std::pair<double,double> src = std::make_pair(x,y);
   std::pair<double,double> closest = this->m_projection->begin()->first;
-//  std::cout << std::endl << "finding closest key to " << src.first << " " << src.second << std::endl;
-  // first one -22279 99999
 
   for (auto it = this->m_projection->begin(); it != this->m_projection->end(); it++) {
-//    std::cout << "testing " << it->first.first << " " << it->first.second << " with distance " << euclidean_dist(src, it->first) << std::endl;
-
     //key = it->first;
     if (euclidean_dist(src, it->first) < euclidean_dist(src,closest)) {
-//      if (it->first.first < -20000) {
-//        std::cout << "updated with " << closest.first << " " << closest.second;
-//        std::cout << " with distance " << euclidean_dist(src, it->first) << ", wich is lower than the previous " << euclidean_dist(src,closest) << std::endl;
-//      }
       closest = it->first;
     }
   }
@@ -143,6 +135,31 @@ int Mesh::gen_image_grey() {
   std::cout << "proj height : " << this->m_proj_height << " with min " << this->m_offset_y << " and max " << this->m_offset_y+this->m_proj_height << std::endl;
   std::cout << "max z: " << this->m_max_z << " - min z: " << this->m_min_z << std::endl;
 
+  std::map<std::pair<int,int>,double> image;
+  double grey, norm_x, norm_y;
+  int x, y;
+
+  for (auto it = this->m_projection->begin(); it != this->m_projection->end(); it++) {
+    // normalize between 0 and 1
+    norm_x = normalize(it->first.first, this->m_offset_x, this->m_offset_x+this->m_proj_width);
+    norm_y = normalize(it->first.second, this->m_offset_y, this->m_offset_y+this->m_proj_height);
+    // scale the value to the image size
+    x = round(this->m_width * norm_x);
+    y = round(this->m_height * norm_y);
+
+    std::pair<int,int> idx = std::make_pair(x,y);
+
+    // normalize the gray level between 0 and 1 and scale it back to the desired detail level
+    grey = normalize(it->second, this->m_min_z, this->m_max_z);
+    image[idx] = 1023*grey;
+  }
+
+
+//  for (auto it = image.begin(); it != image.end(); it++) {
+//    std::cout << it->first.first << " " << it->first.second << ": " << it->second << std::endl;
+//    std::cin >> a;
+//  }
+
   // sort x values
   // sort y values
   // query will be log(n)
@@ -153,31 +170,23 @@ int Mesh::gen_image_grey() {
   f << 1023 << std::endl;
 
   std::pair<double, double> key;
-  double grey;
   double pos_x;
   double pos_y;
 
   // for each pixel of the image, find its value from the projection
-  for (int i=0; i<this->m_height; i++) {  // iterate over all lines  // moves in y
-    for (int j=0; j<this->m_width; j++) {  // iterate over all values in each line // moves in x
-
-      if (i % 100 == 0 && j % 100 == 0)
-        std::cout << "iteracao i " << i << " j " << j << std::endl;
-
-      pos_x = j*conv_x + this->m_offset_x;
-      pos_y = i*conv_y + this->m_offset_y;
-
-      key = this->find_closest_key(pos_x, pos_y);
-
-      grey = normalize((*this->m_projection)[key], 0, 1023);
-
+//  for (int i=0; i<this->m_height; i++) {  // iterate over all lines  // moves in y
+//    for (int j=0; j<this->m_width; j++) {  // iterate over all values in each line // moves in x
+//      if (i % 100 == 0 && j % 100 == 0)
+//        std::cout << "iteracao i " << i << " j " << j << std::endl;
+//      pos_x = j*conv_x + this->m_offset_x;
+//      pos_y = i*conv_y + this->m_offset_y;
+//      key = this->find_closest_key(pos_x, pos_y);
+//      grey = normalize((*this->m_projection)[key], 0, 1023);
 //      std::cout << "added value " << grey << " for " << key.first << " and " << key.second << ". refering to original values " << pos_x << " " << pos_y << std::endl;
-
-      f << grey << " ";
-
-    }
-    f  << "\n";
-  }
+//      f << grey << " ";
+//    }
+//    f  << "\n";
+//  }
 
   f.close();
   return 0;
