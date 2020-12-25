@@ -61,6 +61,13 @@ class Mesh {
      */
     std::pair<double,double> find_closest_key(double x, double y);
 
+    /**
+     * \brief Generates the base image used for the other methods
+     * \note the generated image will have values from 0 to 1, which will be handled later by the final image generation
+     * \note the image will be stored in a map from pai<int,int> -> double
+     */
+    void gen_base_image();
+
   private:
     std::string m_filename;
     int m_width;
@@ -74,7 +81,10 @@ class Mesh {
     double m_max_z;
     double m_min_z;
 
+    bool generated_base_image = false;
+
     std::map<std::pair<double,double>, double> *m_readings;
+    std::map<std::pair<int,int>, double> *m_base_image;
 
 
 };

@@ -113,6 +113,28 @@ std::pair<double,double> Mesh::find_closest_key(double x, double y) {
   return closest;
 }
 
+void Mesh::gen_base_image() {
+  std::map<std::pair<int,int>,double> *image = new std::map<std::pair<int,int>,double>;
+  double norm_x, norm_y;
+  int x, y;
+
+  for (auto it = this->m_projection->begin(); it != this->m_projection->end(); it++) {
+    // normalize between 0 and 1
+    norm_x = normalize(it->first.first, this->m_offset_x, this->m_proj_width + this->m_offset_x);
+    norm_y = normalize(it->first.second, this->m_offset_y, this->m_proj_height + this->m_offset_y);
+    // scale the value to the image size
+    x = round(this->m_height* norm_x);
+    y = round(this->m_width * norm_y);
+
+    std::pair<int,int> idx = std::make_pair(x,y);
+
+    // normalize the gray level between 0 and 1
+    (*image)[idx] = normalize(it->second, this->m_min_z, this->m_max_z);
+  }
+
+  this->m_base_image = image;
+}
+
 int Mesh::gen_image_grey() {
   std::string filename = "mnt_grey.pgm";
   std::ofstream f(filename);  // open the file
@@ -135,24 +157,12 @@ int Mesh::gen_image_grey() {
   std::cout << "proj height: " << this->m_proj_height << " with min " << this->m_offset_y << " and max " << this->m_offset_y+this->m_proj_height << std::endl;
   std::cout << "max z: " << this->m_max_z << " - min z: " << this->m_min_z << std::endl << std::endl;
 
-  std::map<std::pair<int,int>,int> image;
-  double grey, norm_x, norm_y;
-  int x, y;
-
-  for (auto it = this->m_projection->begin(); it != this->m_projection->end(); it++) {
-    // normalize between 0 and 1
-    norm_x = normalize(it->first.first, this->m_offset_x, this->m_proj_width + this->m_offset_x);
-    norm_y = normalize(it->first.second, this->m_offset_y, this->m_proj_height + this->m_offset_y);
-    // scale the value to the image size
-    x = round(this->m_height* norm_x);
-    y = round(this->m_width * norm_y);
-
-    std::pair<int,int> idx = std::make_pair(x,y);
-
-    // normalize the gray level between 0 and 1 and scale it back to the desired detail level
-    grey = normalize(it->second, this->m_min_z, this->m_max_z);
-    image[idx] = 1023 - round(1023*grey);  // inverted so that darker values mean deeper levels
+  // generate the base image in case it hasn't been yet
+  if (this->generated_base_image == false) {
+    this->gen_base_image();
   }
+
+  std::map<std::pair<int,int>, double> *image = this->m_base_image;  // copy it for easier use
 
   // write starting lines of the file with file type and size
   f << "P2" << std::endl;
@@ -167,10 +177,10 @@ int Mesh::gen_image_grey() {
 
       key = std::make_pair(i,j);
 
-      if (image.find(key) == image.end()) {
+      if (image->find(key) == image->end()) {
         f << 0 << " ";
       } else {
-        f << image[key] << " ";
+        f << 1023 - round(1023 * (*image)[key]) << " "; // inverted so that darker values mean deeper levels
       }
 
     }
