@@ -8,16 +8,17 @@
 #include "../include/Mesh.h"
 
 void show_help();
-void parse_args(int argc, char* argv[], bool *show_help, bool *verbose, char filename[], int *size_img);
+void parse_args(int argc, char* argv[], bool *show_help, bool *verbose, char filename[], int *size_img, bool *hillshade);
 
 int main(int argc, char *argv[]) {
   bool help          = false;
   bool verbose       = false;
+  bool hillshade     = false;
   char filename[256] = NO_PATH;
   int size_img       = -1;
 
   // process arguments
-  parse_args(argc, argv, &help, &verbose, filename, &size_img);
+  parse_args(argc, argv, &help, &verbose, filename, &size_img, &hillshade);
 
   if(help) {
     show_help();
@@ -40,10 +41,16 @@ int main(int argc, char *argv[]) {
     return -3;  //TODO: verify if a default value would be better
   }
 
-  std::cout << "Starting raster with: " << std::endl << "Filename -> " << filename << std::endl << "Image width -> " << size_img << std::endl;
+  std::cout << "Starting raster with: " << std::endl
+            << "Filename -> " << filename << std::endl
+            << "Image width -> " << size_img << std::endl;
+  if (hillshade)
+    std::cout << "Hilshade activated" << std::endl;
+  else
+    std::cout << "Hilshade deactivated" << std::endl;
 
   // instantiate the mesh with required information
-  Mesh *mesh = new Mesh(filename, size_img);
+  Mesh *mesh = new Mesh(filename, size_img, hillshade);
 
   // read data and store
   if (mesh->read() < 0) {
@@ -69,19 +76,19 @@ int main(int argc, char *argv[]) {
     return -7;
   }
 
-  // create shadows
-
   return 0;
 }
 
-void parse_args(int argc, char* argv[], bool *show_help, bool *verbose, char filename[], int *size_img) {
+void parse_args(int argc, char* argv[], bool *show_help, bool *verbose, char filename[], int *size_img, bool *hillshade) {
   int i = 0;
   while(i < argc){
-    if(!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
+    if(!strcmp(argv[i], "--help")) {
       *show_help = true;
     } else if(!strcmp(argv[i], "-v") || !strcmp(argv[i], "--verbose")) {
       *verbose = true;
-    } else if(!strcmp(argv[i], "-f") || !strcmp(argv[i], "--filename")){
+    } else if(!strcmp(argv[i], "-h") || !strcmp(argv[i], "--hillshade")) {
+      *hillshade = true;
+    } else if(!strcmp(argv[i], "-d") || !strcmp(argv[i], "--data")){
       i++;
       if(i < argc)
         strcpy(filename, argv[i]);
@@ -97,8 +104,10 @@ void parse_args(int argc, char* argv[], bool *show_help, bool *verbose, char fil
 void show_help()
 {
   std::cout << "Command line options:" << std::endl;
-  std::cout << "( -h   | --help )               : Displays this help message." << std::endl;
+  std::cout << "( --help )                      : Displays this help message." << std::endl;
   std::cout << "( -v   | --verbose )            : Displays more processing information." << std::endl;
-  std::cout << "( -f   | --filename) <PATH>     : The path for the data file." << std::endl;
-  std::cout << "( -s   | --size) <N>             : Desired size of the output image." << std::endl << std::endl;
+  std::cout << "( -h   | --hillshade)           : Adds shadows related to a fake sun." << std::endl << std::endl;
+  std::cout << "( -d   | --data) <PATH>         : The path for the data file." << std::endl;
+  std::cout << "( -s   | --size) <N>            : Desired size of the output image." << std::endl << std::endl;
+
 }

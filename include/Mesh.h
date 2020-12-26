@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <proj.h>
 #include "utils.h"
+#include "defines.h"
 
 class Mesh {
   public:
@@ -21,7 +22,7 @@ class Mesh {
      * \param filename is a string with the path to the file
      * \param width is the numeric value of the horizontal size of the image
      */
-    Mesh(const std::string& filename, double width);
+    Mesh(const std::string& filename, double width, bool hillshade);
 
     ~Mesh();
 
@@ -68,6 +69,8 @@ class Mesh {
      */
     void gen_base_image();
 
+    void gen_shadows(double altitude, double azimuth);
+
   private:
     std::string m_filename;
 
@@ -84,6 +87,7 @@ class Mesh {
     double m_min_z;
 
     bool generated_base_image = false;
+    bool hillshade = false;
 
     std::map<std::pair<double,double>, double> *m_projection;
 

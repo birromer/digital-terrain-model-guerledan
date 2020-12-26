@@ -2,7 +2,13 @@
 
 #define NO_PATH "NoPath"
 
-#define colors [11][3] = { \
+#define DETAIL_LEVEL 255
+
+#define CELL_SIZE 9.0f
+
+#define Z_FACTOR 1.0f
+
+#define colors [11][3] { \
   {37,  57,  175}, \
   {40,  127, 251}, \
   {50,  190, 255}, \
@@ -14,4 +20,4 @@
   {255, 161,  68}, \
   {255, 186, 133}, \
   {255, 255, 255}  \
-};
+}

@@ -1,8 +1,9 @@
 #include "../../include/Mesh.h"
 
-Mesh::Mesh(const std::string& filename, double width) {
+Mesh::Mesh(const std::string& filename, double width, bool hillshade) {
   this->m_filename = filename;
   this->m_width = width;
+  this->hillshade = hillshade;
 }
 
 Mesh::~Mesh() {
@@ -155,21 +156,27 @@ int Mesh::gen_image_grey() {
   std::cout << std::endl << "Starting image creation with height=" << this->m_height << " and width=" << this->m_width << std::endl;
 
   // comment out afterwards
-  std::cout << "proj width: " << this->m_proj_width << " with min " << this->m_offset_x << " and max " << this->m_offset_x+this->m_proj_width << std::endl;
-  std::cout << "proj height: " << this->m_proj_height << " with min " << this->m_offset_y << " and max " << this->m_offset_y+this->m_proj_height << std::endl;
-  std::cout << "max z: " << this->m_max_z << " - min z: " << this->m_min_z << std::endl << std::endl;
+//  std::cout << "proj width: " << this->m_proj_width << " with min " << this->m_offset_x << " and max " << this->m_offset_x+this->m_proj_width << std::endl;
+//  std::cout << "proj height: " << this->m_proj_height << " with min " << this->m_offset_y << " and max " << this->m_offset_y+this->m_proj_height << std::endl;
+//  std::cout << "max z: " << this->m_max_z << " - min z: " << this->m_min_z << std::endl << std::endl;
 
   // generate the base image in case it hasn't been yet
   if (this->generated_base_image == false) {
     this->gen_base_image();
+
+    if (this->hillshade){
+      this->gen_shadows(45, 315);
+    }
   }
+
+
 
   std::map<std::pair<int,int>, double> *image = this->m_base_image;  // copy it for easier use
 
   // write starting lines of the file with file type and size
   f << "P2" << std::endl;
   f << this->m_width << " " << this->m_height << std::endl;
-  f << 1023 << std::endl;
+  f << DETAIL_LEVEL << std::endl;
 
   std::pair<int,int> key;
 
@@ -183,7 +190,7 @@ int Mesh::gen_image_grey() {
         f << 0 << " ";
       } else {
         // in the grayscale case, must simply rescale the values for the desired detail level
-        f << 1023 - round(1023 * (*image)[key]) << " "; // inverted so that darker values mean deeper levels
+        f << DETAIL_LEVEL - round(DETAIL_LEVEL * (*image)[key]) << " "; // inverted so that darker values mean deeper levels
       }
 
     }
@@ -215,6 +222,10 @@ int Mesh::gen_image_col() {
   // generate the base image in case it hasn't been yet
   if (this->generated_base_image == false) {
     this->gen_base_image();
+
+    if (this->hillshade){
+      this->gen_shadows(45, 315);
+    }
   }
 
   std::map<std::pair<int,int>, double> *image = this->m_base_image;  // copy it for easier use
@@ -238,13 +249,67 @@ int Mesh::gen_image_col() {
         mapped = haxby(1 - (*image)[key]);
         f << mapped[0] << " " << mapped[1] << " " << mapped[2] << "\n";
       }
-    }
 
-//    f << "\n";
+    }
   }
 
   f.close();
   return 0;
+}
 
-  return 0;
+void Mesh::gen_shadows(double altitude, double azimuth) {
+  std::map<std::pair<int,int>, double> *image = this->m_base_image;  // copy it for easier use
+
+  double zenith_rad = (90.0 - altitude) * M_PI/180.0;
+  double azimuth_rad = (360.0 - azimuth + 90.0);
+  while (azimuth_rad > 360)
+    azimuth_rad -= 360.0;
+  azimuth_rad = azimuth_rad * M_PI/180.0;
+
+  double a, b, c, d, e, f, g, h, i, dzdx, dzdy, slope_rad, aspect_rad, hillshade;
+
+  for (int i=1; i<this->m_height-1; i++) {
+    for (int j=1; j<this->m_width-1; j++) {
+      a = (*image)[std::make_pair(i-1, j-1)];
+      b = (*image)[std::make_pair(i-1, j  )];
+      c = (*image)[std::make_pair(i-1, j+1)];
+      d = (*image)[std::make_pair(i  , j-1)];
+      e = (*image)[std::make_pair(i  , j  )];
+      f = (*image)[std::make_pair(i  , j+1)];
+      g = (*image)[std::make_pair(i+1, j-1)];
+      h = (*image)[std::make_pair(i+1, j  )];
+      i = (*image)[std::make_pair(i+1, j+1)];
+
+      dzdx = ((c + 2*f + i) - (a + 2*d + g)) / (8 * CELL_SIZE);
+
+      dzdy = ((g + 2*h + i) - (a + 2*b + c)) / (8 * CELL_SIZE);
+
+      slope_rad = atan(Z_FACTOR * sqrt(pow(dzdx,2) + pow(dzdy,2)));
+
+      if (dzdx != 0) {
+        aspect_rad = atan2(dzdx, -dzdy);
+        if (aspect_rad < 0) {
+          aspect_rad = 2*M_PI + aspect_rad;
+        }
+      } else if (dzdx == 0) {
+        if (dzdy > 0) {
+          aspect_rad = M_PI/2;
+        } else if (dzdy < 0) {
+          aspect_rad = 2*M_PI - M_PI/2;
+        } else {
+          aspect_rad = aspect_rad;
+        }
+      }
+
+      hillshade = 255.0 * (
+        (cos(zenith_rad) * cos(slope_rad)) +
+        (sin(zenith_rad) * sin(slope_rad) * cos(azimuth_rad - aspect_rad))
+      );
+
+      std::cout << "hillshade: " << hillshade << std::endl;
+      (*image)[std::make_pair(i,i)] += hillshade;
+
+    }
+  }
+
 }

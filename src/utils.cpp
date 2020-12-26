@@ -34,9 +34,9 @@ int* haxby(double src) {
   double alpha = (src*10) - (int)(src*10);
 //  std::cout << ". idx1 = " << idx_1 << " idx_2 = " << idx_2 << ", alpha = " << alpha;
 
-  r = alpha * color[idx_1][0] + (1-alpha) * color[idx_2][0];
-  g = alpha * color[idx_1][1] + (1-alpha) * color[idx_2][1];
-  b = alpha * color[idx_1][2] + (1-alpha) * color[idx_2][2];
+  r = round(alpha * color[idx_1][0] + (1-alpha) * color[idx_2][0]);
+  g = round(alpha * color[idx_1][1] + (1-alpha) * color[idx_2][1]);
+  b = round(alpha * color[idx_1][2] + (1-alpha) * color[idx_2][2]);
 
 //  std::cout << " -> (" << r << ", " << g << ", " << b << ")" << std::endl;
 
