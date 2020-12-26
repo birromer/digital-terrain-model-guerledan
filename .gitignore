@@ -36,3 +36,7 @@ build
 
 # data file
 data/Guerledan_Feb19_50cm_wgs84.txt
+
+# created images
+mnt_grey.pgm
+mnt_col.ppm
