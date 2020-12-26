@@ -63,11 +63,11 @@ int main(int argc, char *argv[]) {
     return -6;
   }
 
-//  // create colored image
-//  if (mesh->gen_image_col() < 0) {
-//    std::cout << "Error: problem creating colored image." << std::endl;
-//    return -7;
-//  }
+  // create colored image
+  if (mesh->gen_image_col() < 0) {
+    std::cout << "Error: problem creating colored image." << std::endl;
+    return -7;
+  }
 
   // create shadows
 

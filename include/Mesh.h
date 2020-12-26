@@ -70,21 +70,26 @@ class Mesh {
 
   private:
     std::string m_filename;
+
     int m_width;
     int m_height;
 
-    std::map<std::pair<double,double>, double> *m_projection;
     double m_offset_x;
     double m_offset_y;
+
     double m_proj_width;
     double m_proj_height;
+
     double m_max_z;
     double m_min_z;
 
     bool generated_base_image = false;
 
+    std::map<std::pair<double,double>, double> *m_projection;
+
     std::map<std::pair<double,double>, double> *m_readings;
-    std::map<std::pair<int,int>, double> *m_base_image;
+
+    std::map<std::pair<int,int>, double> *m_base_image;  // using a map because of how sparse it should be
 
 
 };

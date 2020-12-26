@@ -48,6 +48,8 @@ int Mesh::project() {
   P = proj_create_crs_to_crs(C,
                   "+proj=longlat +datum=WGS84",  // original format in the file
                   "+proj=lcc +lon_0=48.39 +lat_0=-4.48 +lat_1=48 +lat2_50",  // desired projection Lambert93
+//                  "EPSG:4326",
+//                  "EPSG:2154",
                   NULL
   );
 
@@ -223,6 +225,7 @@ int Mesh::gen_image_col() {
   f << 255 << std::endl;
 
   std::pair<int,int> key;
+  int* mapped;
 
   for (int i=this->m_height-1; i>=0; i--) {
 //  for (int i=0; i<this->m_height; i++) {
@@ -233,8 +236,9 @@ int Mesh::gen_image_col() {
       if (image->find(key) == image->end()) {
         f << 0 << " ";
       } else {
-        // in the grayscale case, must simply rescale the values for the desired detail level
-        f << 1023 - round(1023 * (*image)[key]) << " "; // inverted so that darker values mean deeper levels
+        // in the colored case, has to retrieve mapping of colors and put each of the channels
+        mapped = haxby((*image)[key]);
+        f << mapped[0] << " " << mapped[1] << " " << mapped[2] << " ";
       }
 
     }
