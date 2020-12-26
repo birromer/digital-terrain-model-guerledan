@@ -69,8 +69,6 @@ before_script:
   # return to base of the project
   - cd ../dtm-guerledan
 #  - cd ../../dtm-guerledan
-  - locate libproj
-  - which proj
 
 script:
   - mkdir build
