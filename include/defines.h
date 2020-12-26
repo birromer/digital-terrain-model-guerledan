@@ -4,7 +4,7 @@
 
 #define DETAIL_LEVEL 255
 
-#define CELL_SIZE 9.0f
+#define CELL_SIZE 5.0f
 
 #define Z_FACTOR 1.0f
 

@@ -266,28 +266,29 @@ void Mesh::gen_shadows(double altitude, double azimuth) {
     azimuth_rad -= 360.0;
   azimuth_rad = azimuth_rad * M_PI/180.0;
 
-  double a, b, c, d, e, f, g, h, i, dzdx, dzdy, slope_rad, aspect_rad, hillshade;
+  double ai, bi, ci, di, ei, fi, gi, hi, ii, dzdx, dzdy, slope_rad, aspect_rad, hillshade;
 
   for (int i=1; i<this->m_height-1; i++) {
     for (int j=1; j<this->m_width-1; j++) {
-      a = (*image)[std::make_pair(i-1, j-1)];
-      b = (*image)[std::make_pair(i-1, j  )];
-      c = (*image)[std::make_pair(i-1, j+1)];
-      d = (*image)[std::make_pair(i  , j-1)];
-      e = (*image)[std::make_pair(i  , j  )];
-      f = (*image)[std::make_pair(i  , j+1)];
-      g = (*image)[std::make_pair(i+1, j-1)];
-      h = (*image)[std::make_pair(i+1, j  )];
-      i = (*image)[std::make_pair(i+1, j+1)];
+      ai = (*image)[std::make_pair(i-1, j-1)];
+      bi = (*image)[std::make_pair(i-1, j  )];
+      ci = (*image)[std::make_pair(i-1, j+1)];
+      di = (*image)[std::make_pair(i  , j-1)];
+      ei = (*image)[std::make_pair(i  , j  )];
+      fi = (*image)[std::make_pair(i  , j+1)];
+      gi = (*image)[std::make_pair(i+1, j-1)];
+      hi = (*image)[std::make_pair(i+1, j  )];
+      ii = (*image)[std::make_pair(i+1, j+1)];
 
-      dzdx = ((c + 2*f + i) - (a + 2*d + g)) / (8 * CELL_SIZE);
+      dzdx = ((ci + 2*fi + ii) - (ai + 2*di + gi)) / (8 * CELL_SIZE);
 
-      dzdy = ((g + 2*h + i) - (a + 2*b + c)) / (8 * CELL_SIZE);
+      dzdy = ((gi + 2*hi + ii) - (ai + 2*bi + ci)) / (8 * CELL_SIZE);
 
       slope_rad = atan(Z_FACTOR * sqrt(pow(dzdx,2) + pow(dzdy,2)));
+ //     std::cout << "dz/dx = " << dzdx << " | dz/dy = " << dzdy << " | slope = " << slope_rad;
 
       if (dzdx != 0) {
-        aspect_rad = atan2(dzdx, -dzdy);
+        aspect_rad = atan2(dzdy, -dzdx);
         if (aspect_rad < 0) {
           aspect_rad = 2*M_PI + aspect_rad;
         }
@@ -306,8 +307,14 @@ void Mesh::gen_shadows(double altitude, double azimuth) {
         (sin(zenith_rad) * sin(slope_rad) * cos(azimuth_rad - aspect_rad))
       );
 
-      std::cout << "hillshade: " << hillshade << std::endl;
-      (*image)[std::make_pair(i,i)] += hillshade;
+      if (hillshade < 0)
+        hillshade = 0;
+
+//      hillshade = normalize(hillshade, 0,  255) + (*image)[std::make_pair(i,j)];
+//      hillshade = normalize(hillshade, 0, 2);
+
+//      std::cout << " | hillshade: " << hillshade << std::endl;
+      (*image)[std::make_pair(i,j)] -= hillshade;
 
     }
   }
