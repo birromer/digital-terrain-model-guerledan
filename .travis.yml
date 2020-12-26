@@ -67,7 +67,8 @@ before_script:
 #  - pkg-config --modversion opencv4  trying below without 4 to see if it works
 
   # return to base of the project
-  - cd ../../dtm-guerledan
+  - cd ../dtm-guerledan
+#  - cd ../../dtm-guerledan
   - locate libproj
   - which proj
 
