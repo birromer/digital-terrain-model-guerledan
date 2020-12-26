@@ -25,20 +25,20 @@ int* haxby(double src) {
     {255, 186, 133}, \
     {255, 255, 255}  \
   };
-//  std::cout << "haxby de " << src;
+  std::cout << "haxby de " << src;
   int r, g, b;
 
   int idx_1 = floor(src * 10);
   int idx_2 = ceil(src * 10);
 
   double alpha = (src*10) - (int)(src*10);
-//  std::cout << ". idx1 = " << idx_1 << " idx_2 = " << idx_2 << ", alpha = " << alpha;
+  std::cout << ". idx1 = " << idx_1 << " idx_2 = " << idx_2 << ", alpha = " << alpha;
 
   r = round(alpha * color[idx_1][0] + (1-alpha) * color[idx_2][0]);
   g = round(alpha * color[idx_1][1] + (1-alpha) * color[idx_2][1]);
   b = round(alpha * color[idx_1][2] + (1-alpha) * color[idx_2][2]);
 
-//  std::cout << " -> (" << r << ", " << g << ", " << b << ")" << std::endl;
+  std::cout << " -> (" << r << ", " << g << ", " << b << ")" << std::endl;
 
   int *m = new int[3];
   m[0] = r;

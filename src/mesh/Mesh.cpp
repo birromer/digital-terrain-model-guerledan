@@ -266,7 +266,7 @@ void Mesh::gen_shadows(double altitude, double azimuth) {
     azimuth_rad -= 360.0;
   azimuth_rad = azimuth_rad * M_PI/180.0;
 
-  double ai, bi, ci, di, ei, fi, gi, hi, ii, dzdx, dzdy, slope_rad, aspect_rad, hillshade;
+  double ai, bi, ci, di, ei, fi, gi, hi, ii, dzdx, dzdy, slope_rad, hillshade;
 
   for (int i=1; i<this->m_height-1; i++) {
     for (int j=1; j<this->m_width-1; j++) {
@@ -287,6 +287,7 @@ void Mesh::gen_shadows(double altitude, double azimuth) {
       slope_rad = atan(Z_FACTOR * sqrt(pow(dzdx,2) + pow(dzdy,2)));
  //     std::cout << "dz/dx = " << dzdx << " | dz/dy = " << dzdy << " | slope = " << slope_rad;
 
+      double aspect_rad = 0;
       if (dzdx != 0) {
         aspect_rad = atan2(dzdy, -dzdx);
         if (aspect_rad < 0) {
@@ -314,7 +315,7 @@ void Mesh::gen_shadows(double altitude, double azimuth) {
 //      hillshade = normalize(hillshade, 0, 2);
 
 //      std::cout << " | hillshade: " << hillshade << std::endl;
-      (*image)[std::make_pair(i,j)] -= hillshade;
+      (*image)[std::make_pair(i,j)] += hillshade;
 
     }
   }
