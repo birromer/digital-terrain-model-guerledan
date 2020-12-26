@@ -210,7 +210,7 @@ int Mesh::gen_image_col() {
     return -1;
   }
 
-  std::cout << std::endl << "Starting colored image creation with height=" << this->m_height << " and width=" << this->m_width << std::endl;
+  std::cout << "Starting colored image creation with height=" << this->m_height << " and width=" << this->m_width << std::endl;
 
   // generate the base image in case it hasn't been yet
   if (this->generated_base_image == false) {
@@ -221,29 +221,26 @@ int Mesh::gen_image_col() {
 
   // write starting lines of the file with file type and size
   f << "P3" << std::endl;
-  f << this->m_width << " " << this->m_height << std::endl;
-  f << 255 << std::endl;
+  f << this->m_width << " " << this->m_height << " " << 255 << "\n";
 
   std::pair<int,int> key;
   int* mapped;
 
   for (int i=this->m_height-1; i>=0; i--) {
-//  for (int i=0; i<this->m_height; i++) {
     for (int j=0; j<this->m_width; j++) {
 
       key = std::make_pair(i,j);
 
       if (image->find(key) == image->end()) {
-        f << 0 << " ";
+        f << 0 << " " << 0 << " " << 0 << "\n";
       } else {
         // in the colored case, has to retrieve mapping of colors and put each of the channels
-        mapped = haxby((*image)[key]);
-        f << mapped[0] << " " << mapped[1] << " " << mapped[2] << " ";
+        mapped = haxby(1 - (*image)[key]);
+        f << mapped[0] << " " << mapped[1] << " " << mapped[2] << "\n";
       }
-
     }
 
-    f << "\n";
+//    f << "\n";
   }
 
   f.close();
