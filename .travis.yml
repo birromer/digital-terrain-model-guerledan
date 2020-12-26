@@ -32,7 +32,7 @@ addons:
 #      - libjasper-dev
       - libdc1394-22-dev
       - libproj-dev
-      - proj-bin
+#      - proj-bin
 
 before_script:
   # install libjasper-dev that couldn't without new sources
@@ -43,14 +43,14 @@ before_script:
   # verify compilers
   - gcc -v && g++ -v && cmake --version
 
-  # install and verify proj
-  - wget https://download.osgeo.org/proj/proj-7.2.0.tar.gz
-  - tar xvzf proj-7.2.0.tar.gz
-  - cd proj-7.2.0
-  - ./configure
-  - make
-  - sudo make install
-  - make check
+#  # install and verify proj
+#  - wget https://download.osgeo.org/proj/proj-7.2.0.tar.gz
+#  - tar xvzf proj-7.2.0.tar.gz
+#  - cd proj-7.2.0
+#  - ./configure
+#  - make
+#  - sudo make install
+#  - make check
 
 #  # install and verify opencv
 #  - cd ..
@@ -68,6 +68,8 @@ before_script:
 
   # return to base of the project
   - cd ../../dtm-guerledan
+  - locate libproj
+  - which proj
 
 script:
   - mkdir build
