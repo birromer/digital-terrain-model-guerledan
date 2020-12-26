@@ -15,3 +15,4 @@ add_executable(create_raster
 )
 
 target_link_libraries(create_raster /usr/lib/libproj.so ${PROJ_LIBRARIES})
+#target_link_libraries(create_raster ${PROJ_LIBRARIES})
