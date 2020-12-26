@@ -69,6 +69,12 @@ class Mesh {
      */
     void gen_base_image();
 
+    /**
+     * \brief Generates and applies a shadow to the base image values, based on a fake sun at 45 altitute and 315 azimuth
+     * \note is is necessary to have already created the base image
+     * \param altitude is the altitude of the fake sun in degrees
+     * \param azimuth is the orientation (azimuth) of the fake sun in degrees
+     */
     void gen_shadows(double altitude, double azimuth);
 
   private:
