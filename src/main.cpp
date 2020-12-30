@@ -106,7 +106,7 @@ void show_help()
   std::cout << "Command line options:" << std::endl;
   std::cout << "( --help )                      : Displays this help message." << std::endl;
   std::cout << "( -v   | --verbose )            : Displays more processing information." << std::endl;
-  std::cout << "( -h   | --hillshade)           : Adds shadows related to a fake sun." << std::endl << std::endl;
+  std::cout << "( -h   | --hillshade)           : Adds shadows related to a fake sun." << std::endl;
   std::cout << "( -d   | --data) <PATH>         : The path for the data file." << std::endl;
   std::cout << "( -s   | --size) <N>            : Desired size of the output image." << std::endl << std::endl;
 
