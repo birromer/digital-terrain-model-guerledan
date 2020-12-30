@@ -32,3 +32,7 @@ It accepts the following parameters:
     --help: Displays a help message
     -v or --verbose: Activates debugging prints inside the program
     -h or --hillshade: Activates the hillshade algorithm in order to produce shadows in the terrain with a fake sun; WARNING: it is not working properly
+    
+Example with specified file, verbisity on and 800 pixels wide image:
+
+    build/src/create_raster -v -d ./data/Guerledan_Feb19_50cm_wgs84.txt -s 800
