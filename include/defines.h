@@ -2,12 +2,13 @@
 
 #define NO_PATH "NoPath"
 
-#define DETAIL_LEVEL 255
+#define DETAIL_LEVEL 255  // discretization level of the colored image
 
-#define CELL_SIZE 5.0f
+#define CELL_SIZE 5.0f  // cell used for the hillshade
 
-#define Z_FACTOR 1.0f
+#define Z_FACTOR 1.0f  // z factor necessary for the hillshade algorithm
 
+// values of the haxby colormap
 #define colors [11][3] { \
   {37,  57,  175}, \
   {40,  127, 251}, \

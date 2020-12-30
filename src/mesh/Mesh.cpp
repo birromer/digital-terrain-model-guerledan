@@ -258,6 +258,7 @@ int Mesh::gen_image_col() {
 void Mesh::gen_shadows(double altitude, double azimuth) {
   std::map<std::pair<int,int>, double> *image = this->m_base_image;  // copy it for easier use
 
+  // find the neecssary zenith and azimuth in radians
   double zenith_rad = (90.0 - altitude) * M_PI/180.0;
   double azimuth_rad = (360.0 - azimuth + 90.0);
   while (azimuth_rad > 360)
@@ -268,6 +269,7 @@ void Mesh::gen_shadows(double altitude, double azimuth) {
 
   for (int i=1; i<this->m_height-1; i++) {
     for (int j=1; j<this->m_width-1; j++) {
+      // get the cells around i,j in order to compute the derivatives
       ai = (*image)[std::make_pair(i-1, j-1)];
       bi = (*image)[std::make_pair(i-1, j  )];
       ci = (*image)[std::make_pair(i-1, j+1)];
@@ -278,12 +280,12 @@ void Mesh::gen_shadows(double altitude, double azimuth) {
       hi = (*image)[std::make_pair(i+1, j  )];
       ii = (*image)[std::make_pair(i+1, j+1)];
 
+      // the derivatives to know how the colors change in the region
       dzdx = ((ci + 2*fi + ii) - (ai + 2*di + gi)) / (8 * CELL_SIZE);
 
       dzdy = ((gi + 2*hi + ii) - (ai + 2*bi + ci)) / (8 * CELL_SIZE);
 
       slope_rad = atan(Z_FACTOR * sqrt(pow(dzdx,2) + pow(dzdy,2)));
- //     std::cout << "dz/dx = " << dzdx << " | dz/dy = " << dzdy << " | slope = " << slope_rad;
 
       double aspect_rad = 0;
       if (dzdx != 0) {
@@ -308,9 +310,6 @@ void Mesh::gen_shadows(double altitude, double azimuth) {
 
       if (hillshade < 0)
         hillshade = 0;
-
-//      hillshade = normalize(hillshade, 0,  255) + (*image)[std::make_pair(i,j)];
-//      hillshade = normalize(hillshade, 0, 2);
 
 //      std::cout << " | hillshade: " << hillshade << std::endl;
       (*image)[std::make_pair(i,j)] += hillshade;
