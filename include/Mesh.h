@@ -23,7 +23,7 @@ class Mesh {
      * \param filename is a string with the path to the file
      * \param width is the numeric value of the horizontal size of the image
      */
-    Mesh(const std::string& filename, double width, bool hillshade);
+    Mesh(const std::string& filename, double width, bool hillshade, bool verbose);
 
     ~Mesh();
 
@@ -96,6 +96,7 @@ class Mesh {
 
     bool generated_base_image = false;
     bool hillshade = false;
+    bool verbose = false;
 
     std::map<std::pair<double,double>, double> *m_projection;
 

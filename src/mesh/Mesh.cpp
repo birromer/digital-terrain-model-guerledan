@@ -1,9 +1,10 @@
 #include "../../include/Mesh.h"
 
-Mesh::Mesh(const std::string& filename, double width, bool hillshade) {
+Mesh::Mesh(const std::string& filename, double width, bool hillshade, bool verbose) {
   this->m_filename = filename;
   this->m_width = width;
   this->hillshade = hillshade;
+  this->verbose = verbose;
 }
 
 Mesh::~Mesh() {
@@ -153,7 +154,7 @@ int Mesh::gen_image_grey() {
     return -1;
   }
 
-  std::cout << std::endl << "Starting image creation with height=" << this->m_height << " and width=" << this->m_width << std::endl;
+  std::cout << std::endl << "Starting grayscale image creation with height=" << this->m_height << " and width=" << this->m_width << std::endl;
 
   // comment out afterwards
 //  std::cout << "proj width: " << this->m_proj_width << " with min " << this->m_offset_x << " and max " << this->m_offset_x+this->m_proj_width << std::endl;
@@ -197,6 +198,7 @@ int Mesh::gen_image_grey() {
   }
 
   f.close();
+  std::cout << "File created with grayscale image: mnt_grey.pgm" << std::endl << std::endl;
   return 0;
 }
 
@@ -215,7 +217,7 @@ int Mesh::gen_image_col() {
     return -1;
   }
 
-  std::cout << "Starting colored image creation with height=" << this->m_height << " and width=" << this->m_width << std::endl;
+  std::cout << "Starting colored image creation with height=" << this->m_height << " and width=" << this->m_width <<std::endl;
 
   // generate the base image in case it hasn't been yet
   if (this->generated_base_image == false) {
@@ -252,6 +254,8 @@ int Mesh::gen_image_col() {
   }
 
   f.close();
+
+  std::cout << "File created with colored image: mnt_col.ppm" << std::endl << std::endl;
   return 0;
 }
 

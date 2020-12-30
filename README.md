@@ -13,12 +13,9 @@ Digital Terrain Model (Modèle Númerique de Terrain) of the lake Guerlédan.
 ## Building:
 In order to build you must have the Proj library installed at `/usr/local/` path, it is used to project the coordinates in an XY system. Instructions can be found [here](https://proj.org/install.html#compilation-and-installation-from-source-code).
 
-With the installed library, one can build the raster program with the following commands:
+With the installed library, one can build the raster program with the available build script:
 
-    mkdir build
-    cd build
-    cmake ..
-    make
+    ./build.sh
     
 ## Execution:
 The `create_raster` binary will be put inside the `build/src/` folder.

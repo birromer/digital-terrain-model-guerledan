@@ -42,15 +42,20 @@ int main(int argc, char *argv[]) {
   }
 
   std::cout << "Starting raster with: " << std::endl
-            << "Filename -> " << filename << std::endl
+            << "File path-> " << filename << std::endl
             << "Image width -> " << size_img << std::endl;
   if (hillshade)
     std::cout << "Hilshade activated" << std::endl;
   else
     std::cout << "Hilshade deactivated" << std::endl;
 
+  if (verbose)
+    std::cout << "Verbosity on" << std::endl;
+  else
+    std::cout << "Verbosity off" << std::endl;
+
   // instantiate the mesh with required information
-  Mesh *mesh = new Mesh(filename, size_img, hillshade);
+  Mesh *mesh = new Mesh(filename, size_img, hillshade, verbose);
 
   // read data and store
   if (mesh->read() < 0) {
@@ -101,13 +106,11 @@ void parse_args(int argc, char* argv[], bool *show_help, bool *verbose, char fil
   }
 }
 
-void show_help()
-{
+void show_help() {
   std::cout << "Command line options:" << std::endl;
-  std::cout << "( --help )                      : Displays this help message." << std::endl;
-  std::cout << "( -v   | --verbose )            : Displays more processing information." << std::endl;
-  std::cout << "( -h   | --hillshade)           : Adds shadows related to a fake sun." << std::endl;
-  std::cout << "( -d   | --data) <PATH>         : The path for the data file." << std::endl;
-  std::cout << "( -s   | --size) <N>            : Desired size of the output image." << std::endl << std::endl;
-
+  std::cout << "(        --help      )          : Displays this help message." << std::endl;
+  std::cout << "( -v   | --verbose   )          : Displays more processing information." << std::endl;
+  std::cout << "( -h   | --hillshade )          : Adds shadows related to a fake sun." << std::endl;
+  std::cout << "( -d   | --data      ) <PATH>   : The path for the data file." << std::endl;
+  std::cout << "( -s   | --size      ) <N>      : Desired size of the output image." << std::endl << std::endl;
 }
