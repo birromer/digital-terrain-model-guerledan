@@ -169,8 +169,6 @@ int Mesh::gen_image_grey() {
     }
   }
 
-
-
   std::map<std::pair<int,int>, double> *image = this->m_base_image;  // copy it for easier use
 
   // write starting lines of the file with file type and size
