@@ -1,6 +1,8 @@
 # DTM-Guerledan
 Digital Terrain Model (Modèle Númerique de Terrain) of the lake Guerlédan.
 
+In case you arrive here from outside the repository, it can be accessed [here](https://github.com/birromer/dtm-guerledan).
+
 [![Build Status](https://travis-ci.com/birromer/dtm-guerledan.svg?token=AsJ1AsSzkK7yk9VnTknt&branch=main)](https://travis-ci.com/github/birromer/dtm-guerledan)
 
 ## Folders:
