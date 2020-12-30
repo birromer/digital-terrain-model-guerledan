@@ -20,7 +20,7 @@ With the installed library, one can build the raster program with the following 
     cmake ..
     make
     
-## Execution
+## Execution:
 The `create_raster` binary will be put inside the `build/src/` folder.
 
 The data file must be inside the `data/` folder.
